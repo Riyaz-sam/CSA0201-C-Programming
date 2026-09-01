@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEDIVIGIL – Intelligent Emergency Resource Command Center</title>
+  <meta name="description" content="Hospital Emergency Operations Command Center & C Programming Academic Showcase" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- 1. LOGIN TERMINAL SCREEN -->
+  <!-- ========================================================================= -->
+  <div id="login-screen" class="login-overlay">
+    <div class="login-glass-card">
+      <div class="login-brand">
+        <div class="login-badge">
+          <span class="status-dot"></span>
+          <span>SYSTEM STATUS: ALL SYSTEMS OPERATIONAL</span>
+        </div>
+        <h1 class="login-title">MEDIVIGIL</h1>
+        <div class="login-subtitle">Intelligent Emergency Resource Command Center</div>
+        <div class="login-tagline">"Know your resources before the emergency knows you."</div>
+      </div>
+
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="login-username">Terminal Username</label>
+          <input type="text" id="login-username" class="form-input" placeholder="admin" value="admin" required autocomplete="username" />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Security Access Key</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" value="admin123" required autocomplete="current-password" />
+        </div>
+
+        <div class="demo-credentials-box">
+          <strong>Demo Credentials:</strong><br />
+          Username: <code>admin</code> &nbsp;|&nbsp; Password: <code>admin123</code>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1rem;">
+          Authenticate Terminal Session &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN APPLICATION SHELL -->
+  <!-- ========================================================================= -->
+  <div id="app-shell" class="app-shell hidden">
+
+    <!-- Sidebar Navigation (Menu-Driven Architecture) -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-symbol">M</div>
+        <div class="logo-text-wrap">
+          <span class="logo-name">MEDIVIGIL</span>
+          <span class="logo-sub">Command Center</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">COMMAND & OPERATIONS</div>
+        <div class="nav-item active" data-view="dashboard" onclick="App.navigate('dashboard')">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-view="resources" onclick="App.navigate('resources')">
+          <span class="nav-icon">💊</span>
+          <span>Resources Manifest</span>
+        </div>
+        <div class="nav-item" data-view="departments" onclick="App.navigate('departments')">
+          <span class="nav-icon">🏢</span>
+          <span>Department Units</span>
+        </div>
+        <div class="nav-item" data-view="emergency-monitor" onclick="App.navigate('emergency-monitor')">
+          <span class="nav-icon">🚨</span>
+          <span>Emergency Monitor</span>
+        </div>
+
+        <div class="nav-section-title">RESOURCE RECONCILIATION</div>
+        <div class="nav-item" data-view="merge-center" onclick="App.navigate('merge-center')">
+          <span class="nav-icon">🔀</span>
+          <span>Merge Center</span>
+        </div>
+        <div class="nav-item" data-view="transfer-center" onclick="App.navigate('transfer-center')">
+          <span class="nav-icon">🔄</span>
+          <span>Resource Transfer</span>
+        </div>
+        <div class="nav-item" data-view="duplicates" onclick="App.navigate('duplicates')">
+          <span class="nav-icon">🔍</span>
+          <span>Duplicate Scanner</span>
+        </div>
+
+        <div class="nav-section-title">ANALYTICS & INTELLIGENCE</div>
+        <div class="nav-item" data-view="analytics" onclick="App.navigate('analytics')">
+          <span class="nav-icon">📈</span>
+          <span>Analytics & Trends</span>
+        </div>
+        <div class="nav-item" data-view="recursion" onclick="App.navigate('recursion')">
+          <span class="nav-icon">🌳</span>
+          <span>Hierarchical Analysis</span>
+        </div>
+        <div class="nav-item" data-view="reports" onclick="App.navigate('reports')">
+          <span class="nav-icon">📋</span>
+          <span>Consolidated Report</span>
+        </div>
+        <div class="nav-item" data-view="activity-log" onclick="App.navigate('activity-log')">
+          <span class="nav-icon">🕒</span>
+          <span>Activity Audit Log</span>
+        </div>
+
+        <div class="nav-section-title">C ACADEMIC LAB</div>
+        <div class="nav-item" data-view="c-concepts" onclick="App.navigate('c-concepts')">
+          <span class="nav-icon">🧠</span>
+          <span>C Concepts & Pointers</span>
+        </div>
+        <div class="nav-item" data-view="test-suite" onclick="App.navigate('test-suite')">
+          <span class="nav-icon">🧪</span>
+          <span>Test Suite (TC01-20)</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-indicator">
+          <span class="status-dot"></span>
+          <span>MEDIVIGIL CORE ACTIVE</span>
+        </div>
+        <div class="user-profile-badge">
+          <div class="user-info">
+            <span class="user-name">Dr. Sarah Connor</span>
+            <span class="user-role">Operations Director</span>
+          </div>
+          <button class="btn-logout" title="Sign Out" onclick="App.logout()">🚪</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle Sidebar">☰</button>
+          <div class="facility-title-wrap">
+            <div class="facility-name">CENTRAL CLINICAL OPERATIONS COMMAND</div>
+            <div class="facility-tag">Hospital Emergency Resource Management Network</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div id="live-telemetry-clock" class="telemetry-clock">00:00:00 UTC</div>
+          
+          <div class="mode-selector-wrap">
+            <span class="mode-selector-label">OP-MODE:</span>
+            <select id="topbar-emergency-mode" class="mode-select">
+              <option value="NORMAL">NORMAL</option>
+              <option value="ALERT">ALERT</option>
+              <option value="CRISIS">CRISIS</option>
+            </select>
+          </div>
+
+          <button class="btn-crisis-trigger" onclick="App.triggerCrisisSimulation()" title="Simulate Emergency Surge">
+            🚨 ACTIVATE DEMO EMERGENCY
+          </button>
+
+          <button class="btn-reset-demo" onclick="App.resetDemoSimulation()" title="Reset to Baseline Inventory">
+            ↺ RESET DEMO
+          </button>
+        </div>
+      </header>
+
+      <!-- Flashing Emergency Crisis Banner -->
+      <div id="crisis-banner" class="crisis-banner hidden">
+        <div class="crisis-banner-content">
+          <span class="crisis-icon">🚨</span>
+          <span>MASS CASUALTY INCIDENT DECLARED – CRISIS MODE ACTIVE: CRITICAL SUPPLIES DEPLETED! EMERGENCY TRANSFERS REQUIRED.</span>
+        </div>
+        <button class="btn btn-xs btn-secondary" onclick="App.navigate('transfer-center')">Transfer Supplies &rarr;</button>
+      </div>
+
+      <!-- Viewport Content Container -->
+      <main class="content-viewport">
+
+        <!-- =================================================================== -->
+        <!-- VIEW: DASHBOARD -->
+        <!-- =================================================================== -->
+        <section id="view-dashboard" class="view-panel">
+          
+          <!-- Top Grid: Readiness Circular Gauge + Stat Cards -->
+          <div class="dashboard-top-grid">
+            
+            <!-- Circular Gauge Card -->
+            <div class="glass-card readiness-card">
+              <div class="card-heading-sm">EMERGENCY READINESS INDEX</div>
+              <div class="circular-gauge-wrap">
+                <svg viewBox="0 0 120 120" class="gauge-svg">
+                  <circle cx="60" cy="60" r="54" class="gauge-bg"></circle>
+                  <circle id="readiness-circle-progress" cx="60" cy="60" r="54" class="gauge-progress"></circle>
+                </svg>
+                <div class="gauge-center-text">
+                  <span id="readiness-score-value" class="readiness-score-num">88</span>
+                  <span class="readiness-score-scale">/ 100</span>
+                </div>
+              </div>
+              <div id="readiness-score-label" class="readiness-rating-badge">STABLE</div>
+              <div class="readiness-subtext">Automated Composite Scoring Engine</div>
+            </div>
+
+            <!-- Stats 6-Card Grid -->
+            <div class="stats-grid-6">
+              <div class="stat-box stat-total" onclick="App.navigate('resources')">
+                <div class="stat-box-header">
+                  <span class="stat-label">TOTAL RESOURCES</span>
+                  <span class="stat-icon">📦</span>
+                </div>
+                <div id="stat-total-resources" class="stat-number">37</div>
+                <div class="stat-sub">Across 8 clinical units</div>
+              </div>
+
+              <div class="stat-box stat-safe" onclick="App.filterByDeptAndCategory('ALL')">
+                <div class="stat-box-header">
+                  <span class="stat-label">SAFE BUFFER</span>
+                  <span class="stat-icon">🟢</span>
+                </div>
+                <div id="stat-safe-resources" class="stat-number">24</div>
+                <div class="stat-sub">> Minimum threshold</div>
+              </div>
+
+              <div class="stat-box stat-low" onclick="App.navigate('resources')">
+                <div class="stat-box-header">
+                  <span class="stat-label">LOW STOCK</span>
+                  <span class="stat-icon">🟡</span>
+                </div>
+                <div id="stat-low-resources" class="stat-number">6</div>
+                <div class="stat-sub">Below safety buffer</div>
+              </div>
+
+              <div class="stat-box stat-critical" onclick="App.navigate('emergency-monitor')">
+                <div class="stat-box-header">
+                  <span class="stat-label">CRITICAL SHORTAGE</span>
+                  <span class="stat-icon">🟠</span>
+                </div>
+                <div id="stat-critical-resources" class="stat-number">5</div>
+                <div class="stat-sub">Below critical threshold</div>
+              </div>
+
+              <div class="stat-box stat-oos" onclick="App.navigate('emergency-monitor')">
+                <div class="stat-box-header">
+                  <span class="stat-label">OUT OF STOCK</span>
+                  <span class="stat-icon">🔴</span>
+                </div>
+                <div id="stat-oos-resources" class="stat-number">2</div>
+                <div class="stat-sub">Immediate stockout</div>
+              </div>
+
+              <div class="stat-box stat-bed" onclick="App.navigate('emergency-monitor')">
+                <div class="stat-box-header">
+                  <span class="stat-label">BED AVAILABILITY</span>
+                  <span class="stat-icon">🛏️</span>
+                </div>
+                <div id="stat-beds-available" class="stat-number">21/120</div>
+                <div id="bed-occupancy-badge" class="stat-sub">78% OCCUPIED</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Quick Bar -->
+          <div class="table-header-bar">
+            <div class="table-title-group">
+              <h2 class="table-title">Emergency Resource Quick Manifest</h2>
+              <span id="resources-result-count" class="table-count-badge">37 Resources</span>
+            </div>
+            <div class="table-action-btns">
+              <button class="btn btn-primary" onclick="App.openAddModal()">+ Add New Resource</button>
+              <button class="btn btn-secondary" onclick="App.exportCSVData()">Export CSV</button>
+              <button class="btn btn-secondary" onclick="App.exportJSONData()">Backup JSON</button>
+              <label class="btn btn-outline" style="cursor: pointer;">
+                Import JSON <input type="file" accept=".json" style="display:none;" onchange="App.importJSONData(event)" />
+              </label>
+            </div>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div class="filter-toolbar">
+            <div class="search-box-wrap">
+              <span class="search-icon-prefix">🔍</span>
+              <input type="text" id="global-search-input" class="search-input" placeholder="Smart Search: Type resource ID, name, category, or dept..." />
+            </div>
+
+            <select id="filter-dept" class="filter-select">
+              <option value="ALL">All Departments</option>
+              <option value="Emergency">Emergency</option>
+              <option value="ICU">ICU</option>
+              <option value="Pharmacy">Pharmacy</option>
+              <option value="Operation Theatre">Operation Theatre</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="General Ward">General Ward</option>
+              <option value="Laboratory">Laboratory</option>
+              <option value="Blood Bank">Blood Bank</option>
+            </select>
+
+            <select id="filter-category" class="filter-select">
+              <option value="ALL">All Categories</option>
+              <option value="Medicine">Medicine</option>
+              <option value="Equipment">Equipment</option>
+              <option value="Beds">Beds</option>
+              <option value="Supplies">Supplies</option>
+            </select>
+
+            <select id="filter-status" class="filter-select">
+              <option value="ALL">All Statuses</option>
+              <option value="SAFE">SAFE 🟢</option>
+              <option value="LOW">LOW 🟡</option>
+              <option value="CRITICAL">CRITICAL 🟠</option>
+              <option value="OUT OF STOCK">OUT OF STOCK 🔴</option>
+            </select>
+
+            <select id="filter-priority" class="filter-select">
+              <option value="ALL">All Priorities</option>
+              <option value="CRITICAL">CRITICAL</option>
+              <option value="HIGH">HIGH</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LOW">LOW</option>
+            </select>
+
+            <button class="btn btn-secondary btn-sm" onclick="App.resetFilters()">Clear Filters</button>
+          </div>
+
+          <!-- Data Table -->
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th onclick="App.sortTable('id')">ID ⇕</th>
+                  <th onclick="App.sortTable('name')">RESOURCE NAME ⇕</th>
+                  <th onclick="App.sortTable('category')">CATEGORY ⇕</th>
+                  <th onclick="App.sortTable('department')">DEPARTMENT ⇕</th>
+                  <th onclick="App.sortTable('quantity')">STOCK QUANTITY ⇕</th>
+                  <th onclick="App.sortTable('priority')">PRIORITY ⇕</th>
+                  <th onclick="App.sortTable('healthScore')">HEALTH SCORE ⇕</th>
+                  <th onclick="App.sortTable('status')">STATUS ⇕</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="resources-table-body">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: RESOURCES MANIFEST -->
+        <!-- =================================================================== -->
+        <section id="view-resources" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Comprehensive Hospital Resource Inventory</h2>
+              <p class="stat-sub">Central database of all medicines, equipment, beds, and medical consumables.</p>
+            </div>
+            <button class="btn btn-primary" onclick="App.openAddModal()">+ Add New Clinical Resource</button>
+          </div>
+
+          <!-- (Shared Table Controls) Re-rendered dynamically -->
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th onclick="App.sortTable('id')">ID ⇕</th>
+                  <th onclick="App.sortTable('name')">RESOURCE NAME ⇕</th>
+                  <th onclick="App.sortTable('category')">CATEGORY ⇕</th>
+                  <th onclick="App.sortTable('department')">DEPARTMENT ⇕</th>
+                  <th onclick="App.sortTable('quantity')">STOCK QUANTITY ⇕</th>
+                  <th onclick="App.sortTable('priority')">PRIORITY ⇕</th>
+                  <th onclick="App.sortTable('healthScore')">HEALTH SCORE ⇕</th>
+                  <th onclick="App.sortTable('status')">STATUS ⇕</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="resources-table-body-full">
+                <!-- Mirrors Main Table -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: DEPARTMENTS -->
+        <!-- =================================================================== -->
+        <section id="view-departments" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Department Clinical Units</h2>
+              <p class="stat-sub">Real-time status and asset availability across all 8 hospital wings.</p>
+            </div>
+          </div>
+          <div id="department-cards-grid" class="dept-grid">
+            <!-- Dynamically populated 8 Department cards -->
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: EMERGENCY MONITOR & BED TELEMETRY -->
+        <!-- =================================================================== -->
+        <section id="view-emergency-monitor" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Emergency Resource Monitor & Bed Capacity</h2>
+              <p class="stat-sub">Telemetry monitoring of critical shortages and inpatient capacity.</p>
+            </div>
+            <span id="alerts-count-badge" class="status-badge status-badge-critical">ALERTS ACTIVE</span>
+          </div>
+
+          <!-- Bed Telemetry Cards -->
+          <div class="glass-card" style="margin-bottom: 24px;">
+            <h3 class="card-heading-sm">FACILITY BED OCCUPANCY TELEMETRY</h3>
+            <div class="stats-grid-6" style="margin-bottom: 20px;">
+              <div class="stat-box">
+                <span class="stat-label">TOTAL BEDS</span>
+                <span id="bed-stat-total" class="stat-number">120</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">OCCUPIED</span>
+                <span id="bed-stat-occupied" class="stat-number text-warning">94</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">AVAILABLE</span>
+                <span id="bed-stat-available" class="stat-number text-safe">21</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">RESERVED (TRAUMA)</span>
+                <span id="bed-stat-reserved" class="stat-number">5</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">OCCUPANCY RATE</span>
+                <span id="bed-stat-occupancy-rate" class="stat-number text-info">78%</span>
+              </div>
+            </div>
+
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>WING / UNIT</th>
+                  <th>TOTAL BEDS</th>
+                  <th>OCCUPIED</th>
+                  <th>AVAILABLE</th>
+                  <th>RESERVED</th>
+                  <th>LOAD FACTOR</th>
+                  <th>DIRECT ADJUST</th>
+                </tr>
+              </thead>
+              <tbody id="bed-breakdown-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Alerts Feed Grid -->
+          <div class="analytics-grid-2">
+            <div class="glass-card">
+              <h3 class="card-heading-sm">🚨 LIVE CRITICAL SHORTAGE ALERTS</h3>
+              <div id="alerts-feed-container">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="card-heading-sm">💡 RECOMMENDED TACTICAL ACTIONS</h3>
+              <div id="recommendations-feed-container">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: MERGE CENTER -->
+        <!-- =================================================================== -->
+        <section id="view-merge-center" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Department Merge Center</h2>
+              <p class="stat-sub">Consolidate resources between two hospital departments without creating duplicate records.</p>
+            </div>
+          </div>
+
+          <div class="glass-card" style="margin-bottom: 24px;">
+            <div class="form-grid-2" style="margin-bottom: 20px;">
+              <div class="form-group">
+                <label for="merge-source-dept">Source Department (Releasing Inventory)</label>
+                <select id="merge-source-dept" class="form-select" onchange="App.updateMergePreview()"></select>
+              </div>
+              <div class="form-group">
+                <label for="merge-target-dept">Target Department (Receiving Inventory)</label>
+                <select id="merge-target-dept" class="form-select" onchange="App.updateMergePreview()"></select>
+              </div>
+            </div>
+
+            <div id="merge-preview-container">
+              <!-- Comparison Table Preview -->
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+              <button id="btn-execute-merge" class="btn btn-primary" onclick="App.executeMerge()">
+                Confirm & Consolidate Departments &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: RESOURCE TRANSFER -->
+        <!-- =================================================================== -->
+        <section id="view-transfer-center" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Emergency Inter-Department Transfer</h2>
+              <p class="stat-sub">Move specific quantities of medicines, blood bags, or equipment to resolve localized shortages.</p>
+            </div>
+          </div>
+
+          <div class="glass-card" style="max-width: 700px;">
+            <form id="transfer-form" onsubmit="App.handleTransferSubmit(event)">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="transfer-from-dept">From Department (Source)</label>
+                  <select id="transfer-from-dept" class="form-select" onchange="App.updateTransferResourceOptions()" required></select>
+                </div>
+                <div class="form-group">
+                  <label for="transfer-to-dept">To Department (Destination)</label>
+                  <select id="transfer-to-dept" class="form-select" required></select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="transfer-resource-name">Select Resource to Transfer</label>
+                <select id="transfer-resource-name" class="form-select" required></select>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="transfer-quantity">Transfer Quantity</label>
+                <input type="number" id="transfer-quantity" class="form-input" min="1" placeholder="e.g. 10" required />
+              </div>
+
+              <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">
+                  🚀 Execute Emergency Transfer
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: DUPLICATE SCANNER -->
+        <!-- =================================================================== -->
+        <section id="view-duplicates" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Duplicate Resource Scanner</h2>
+              <p class="stat-sub">Scans inventory for identical (Resource Name + Category + Department) entries for safe consolidation.</p>
+            </div>
+          </div>
+          <div id="duplicate-scanner-results">
+            <!-- Rendered duplicate groups -->
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: ANALYTICS & TRENDS -->
+        <!-- =================================================================== -->
+        <section id="view-analytics" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Resource Analytics & Depletion Forecasts</h2>
+              <p class="stat-sub">Stock distribution charts, departmental volume analysis, and historical burn-down telemetry.</p>
+            </div>
+          </div>
+
+          <div class="analytics-grid-2">
+            <div class="glass-card">
+              <h3 class="card-heading-sm">RESOURCE STATUS DISTRIBUTION</h3>
+              <div id="chart-status-donut"></div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="card-heading-sm">PRIORITY STRATIFICATION</h3>
+              <div id="chart-priority-donut"></div>
+            </div>
+          </div>
+
+          <div class="analytics-grid-2">
+            <div class="glass-card">
+              <h3 class="card-heading-sm">DEPARTMENTAL STOCK VOLUME</h3>
+              <div id="chart-dept-bars"></div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="card-heading-sm">CATEGORY ASSET AVAILABILITY</h3>
+              <div id="chart-category-bars"></div>
+            </div>
+          </div>
+
+          <!-- Heatmap Card -->
+          <div class="glass-card" style="margin-bottom: 24px;">
+            <h3 class="card-heading-sm">RESOURCE STATUS HEATMAP MATRIX (8 DEPARTMENTS &times; 4 CATEGORIES)</h3>
+            <div id="analytics-heatmap-container"></div>
+          </div>
+
+          <!-- Consumption Trend Card -->
+          <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 class="card-heading-sm" style="margin-bottom: 0;">5-DAY CONSUMPTION BURN-DOWN TELEMETRY</h3>
+              <select id="trend-item-select" class="form-select" style="max-width: 280px;"></select>
+            </div>
+            <div id="trend-chart-container"></div>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: HIERARCHICAL RECURSION -->
+        <!-- =================================================================== -->
+        <section id="view-recursion" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Hierarchical Resource Traversal (Recursion)</h2>
+              <p class="stat-sub">Demonstrates tree traversal from Hospital &rarr; Department &rarr; Category &rarr; Leaf Resource.</p>
+            </div>
+            <button class="btn btn-primary" onclick="App.renderRecursionView()">
+              ⚡ Run Recursive Analysis
+            </button>
+          </div>
+
+          <div id="recursion-results-container">
+            <!-- Rendered recursive trace & tree -->
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: CONSOLIDATED REPORT -->
+        <!-- =================================================================== -->
+        <section id="view-reports" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">Consolidated Emergency Resource Report</h2>
+              <p class="stat-sub">Official executive manifest, readiness assessment, and tactical recommendations.</p>
+            </div>
+            <div class="table-action-btns">
+              <button class="btn btn-primary" onclick="ReportManager.printReport()">🖨️ Print Report</button>
+              <button class="btn btn-secondary" onclick="App.exportCSVData()">Export CSV</button>
+              <button class="btn btn-secondary" onclick="App.exportJSONData()">Export JSON</button>
+            </div>
+          </div>
+
+          <div id="reports-render-target">
+            <!-- Printable Report Document Rendered here -->
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: ACTIVITY LOG -->
+        <!-- =================================================================== -->
+        <section id="view-activity-log" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">System Activity Audit Log</h2>
+              <p class="stat-sub">Chronological ledger of inventory updates, transfers, emergency alarms, and merges.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="StorageManager.clearActivityLog(); App.renderActivityLog();">Clear Log</button>
+          </div>
+
+          <div class="glass-card">
+            <div id="activity-log-container">
+              <!-- Rendered activity timeline -->
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: C PROGRAMMING CONCEPTS & POINTER LAB -->
+        <!-- =================================================================== -->
+        <section id="view-c-concepts" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">C Programming Concepts & Pointer Simulation</h2>
+              <p class="stat-sub">Academic mapping connecting web dashboard features to C structures, memory pointers, and algorithms.</p>
+            </div>
+          </div>
+
+          <!-- Academic Mapping Cards Grid -->
+          <div class="stats-grid-6" style="margin-bottom: 24px;">
+            <div class="stat-box">
+              <strong class="stat-label">1. Operators & Math</strong>
+              <p class="stat-sub">Health score <code>(qty/min)*100</code>, readiness index weights, and bed occupancy %.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">2. Decision Making</strong>
+              <p class="stat-sub">If-else ladder for status classification: SAFE, LOW, CRITICAL, OUT OF STOCK.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">3. Loops & Arrays</strong>
+              <p class="stat-sub">Iterating <code>struct Resource resources[N]</code> for filtering, rendering, and totals.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">4. Strings & Searching</strong>
+              <p class="stat-sub">Case-insensitive multi-attribute linear search & binary search on sorted index.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">5. Sorting Algorithms</strong>
+              <p class="stat-sub">Bubble sort, insertion sort, and quick sort by quantity, priority rank, and name.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">6. 2-Way Merging</strong>
+              <p class="stat-sub">Combining departmental structural records while accumulating quantities.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">7. Recursion</strong>
+              <p class="stat-sub">Hierarchical tree descent: Hospital &rarr; Department &rarr; Category &rarr; Resource.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">8. Pointers</strong>
+              <p class="stat-sub">Passing structures by reference <code>struct Resource* ptr</code> to update records in-place.</p>
+            </div>
+            <div class="stat-box">
+              <strong class="stat-label">9. File Handling</strong>
+              <p class="stat-sub">Browser persistence mapped to C <code>fopen(), fread(), fwrite(), fprintf()</code>.</p>
+            </div>
+          </div>
+
+          <!-- Interactive Pointer Visualizer -->
+          <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 class="card-heading-sm" style="margin-bottom: 0;">INTERACTIVE MEMORY ADDRESS & POINTER DEREFERENCING SIMULATOR</h3>
+              <select id="pointer-sim-resource-select" class="form-select" style="max-width: 340px;" onchange="App.updatePointerSimulator()"></select>
+            </div>
+            <div id="pointer-sim-output">
+              <!-- Rendered code and hex memory visualization -->
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW: AUTOMATED TEST SUITE (TC01-TC20) -->
+        <!-- =================================================================== -->
+        <section id="view-test-suite" class="view-panel hidden">
+          <div class="table-header-bar">
+            <div>
+              <h2 class="table-title">System Verification & Test Suite (TC01 – TC20)</h2>
+              <p class="stat-sub">Interactive test harness validating all CRUD, search, sort, merge, and emergency simulation requirements.</p>
+            </div>
+            <button class="btn btn-primary" onclick="App.runAllTestCases()">▶ Run All 20 Test Cases</button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>TEST ID</th>
+                  <th>TEST CASE NAME</th>
+                  <th>CATEGORY</th>
+                  <th>INPUT CONDITIONS</th>
+                  <th>EXPECTED RESULT</th>
+                  <th>ACTUAL RESULT</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="test-suite-table-body">
+                <!-- Dynamically populated TC01 - TC20 rows -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. ADD / EDIT RESOURCE MODAL -->
+  <!-- ========================================================================= -->
+  <div id="resource-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Add Emergency Clinical Resource</h3>
+        <button class="btn-modal-close" onclick="App.closeModal()">&times;</button>
+      </div>
+
+      <form id="resource-form">
+        <input type="hidden" id="form-edit-id" />
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="form-id">Resource ID</label>
+            <input type="text" id="form-id" class="form-input" placeholder="RES-038" required />
+          </div>
+
+          <div class="form-group">
+            <label for="form-name">Resource Name</label>
+            <input type="text" id="form-name" class="form-input" placeholder="e.g. Oxygen Cylinder (40L)" required />
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top: 14px;">
+          <div class="form-group">
+            <label for="form-department">Department</label>
+            <select id="form-department" class="form-select" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="form-category">Category</label>
+            <select id="form-category" class="form-select" required></select>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top: 14px;">
+          <div class="form-group">
+            <label for="form-quantity">Initial Stock Quantity</label>
+            <input type="number" id="form-quantity" class="form-input" min="0" placeholder="e.g. 50" required />
+          </div>
+
+          <div class="form-group">
+            <label for="form-unit">Measurement Unit</label>
+            <input type="text" id="form-unit" class="form-input" placeholder="Units / Boxes / Cylinders / Vials" required />
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top: 14px;">
+          <div class="form-group">
+            <label for="form-min-threshold">Minimum Threshold (Low Buffer)</label>
+            <input type="number" id="form-min-threshold" class="form-input" min="0" placeholder="e.g. 20" required />
+          </div>
+
+          <div class="form-group">
+            <label for="form-critical-threshold">Critical Threshold (Emergency Buffer)</label>
+            <input type="number" id="form-critical-threshold" class="form-input" min="0" placeholder="e.g. 10" required />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="form-priority">Clinical Priority Level</label>
+          <select id="form-priority" class="form-select" required></select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Resource Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript Modules (Modular Architecture) -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/sorting.js"></script>
+  <script src="js/merge.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/alerts.js"></script>
+  <script src="js/recursion.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
